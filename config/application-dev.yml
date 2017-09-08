@@ -1,0 +1,17 @@
+server:
+  port: 8080
+  context-path: /spring-web-security
+com:
+  jin:
+    siteminder:
+      restClient:
+        protocol: https
+        host: localhost
+        port: 443
+        appRoot: /sso
+        requireAuth : false
+spring:
+  application:
+    name: spring-web-security
+logging:
+  file: ./target/spring-web-security.log
