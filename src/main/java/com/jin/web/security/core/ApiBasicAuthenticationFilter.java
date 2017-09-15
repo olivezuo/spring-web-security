@@ -27,6 +27,7 @@ public class ApiBasicAuthenticationFilter extends  BasicAuthenticationFilter {
 			Authentication authResult) throws IOException {
 		logger.info("Successfully login for user: " + authResult.getName());
 		request.getSession().setMaxInactiveInterval(getSessionMaxInactiveInterval());
+		//request.getSession().
 	}
 	
 	public int getSessionMaxInactiveInterval() {

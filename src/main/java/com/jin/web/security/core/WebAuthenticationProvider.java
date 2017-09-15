@@ -43,10 +43,14 @@ public class WebAuthenticationProvider extends AbstractUserDetailsAuthentication
 		
 		UserAccount userAccount = userAccountService.retrieveUser(username, password);
 		
+		if (null == userAccount) {
+        	logger.error("Username {} : We got an error for auth", username);
+            throw new BadCredentialsException("Error in auth, please try again later");
+		}
+		
 		if (!userAccount.isValid()) {
         	logger.error("Username {} password {}: invalid username/password combination", username, password);
             throw new BadCredentialsException("Invalid Login");
-
 		}
 		
 		List<GrantedAuthority> auths = AuthorityUtils.commaSeparatedStringToAuthorityList("NONE");
