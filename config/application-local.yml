@@ -6,19 +6,26 @@ com:
     siteminder:
       restClient:
         protocol: https
-        host: localhost
+        host: sso.staples.com
         port: 443
-        appRoot: /sso
+        appRoot: /ssorest/service/sso
         requireAuth : false
     web:
       session:
-        maxInactiveInterval: 15   
+        maxInactiveInterval: 1500
+      security:
+        url:
+          loginUrl: /login
+          noAuthWebUrlsPattern: /, /home
+          apiUrlPrefix: /api
 spring:
   application:
     name: spring-web-security
   redis:
     host: localhost
     port: 6379
-  
+management:
+  security:
+    enabled: false
 logging:
   file: ./target/spring-web-security.log

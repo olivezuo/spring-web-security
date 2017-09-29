@@ -30,7 +30,8 @@ public class MultiHttpSecurityConfig {
 	@Autowired
 	ApiBasicAuthenticationEntryPoint apiBasicAuthenticationEntryPoint;
 
-	
+	@Autowired
+	UrlConfig urlConfig;
 	
 	@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -45,13 +46,15 @@ public class MultiHttpSecurityConfig {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			
+			String[] noAuthWebUrlsPattern = (urlConfig.getNoAuthWebUrlsPattern() + "," + urlConfig.getApiUrlPrefix() + "**").replaceAll("\\s+","").split(",");
 	        http
 	        .authorizeRequests()
-	            .antMatchers("/", "/home", "/api**").permitAll()
+	            .antMatchers(noAuthWebUrlsPattern).permitAll()
+	        	//.antMatchers("/", "/home", "/api**").permitAll()
 	            .anyRequest().authenticated()
 	            .and()
 	        .formLogin()
-	            .loginPage("/login")
+	            .loginPage(urlConfig.getLoginUrl())
 	            .permitAll()
 	            .successHandler(formAuthenticationSuccessHandler)
 	            .and()
@@ -71,7 +74,7 @@ public class MultiHttpSecurityConfig {
 			
 	        http
 	        .addFilterAt(apiBasicAuthenticationFilter(), BasicAuthenticationFilter.class)
-	        .antMatcher("/api/**")
+	        .antMatcher(urlConfig.getApiUrlPrefix() + "/**")
 	        .authorizeRequests()
 	            .anyRequest().authenticated()
 	            .and()
